@@ -1,0 +1,7 @@
+package com.example.practice3.view.di
+
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ActivityContext
