@@ -1,4 +1,4 @@
-package com.example.practice3.view.fragment
+package com.example.practice3.userdetails.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -9,13 +9,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.practice3.databinding.FragmentMainBinding
-import com.example.practice3.view.MainApplication
-import com.example.practice3.view.contract.IUserView
-import com.example.practice3.view.model.User
-import com.example.practice3.view.presenter.UserPresenter
+import com.example.practice3.userdetails.MainApplication
+import com.example.practice3.userdetails.contract.IUserView
+import com.example.practice3.userdetails.model.User
+import com.example.practice3.userdetails.presenter.UserPresenter
 import javax.inject.Inject
 
-class MainFragment : IUserView, Fragment() {
+class UserFragment : IUserView, Fragment() {
 
     private lateinit var inputMethodManager: InputMethodManager
     private lateinit var binding: FragmentMainBinding
@@ -27,7 +27,7 @@ class MainFragment : IUserView, Fragment() {
         super.onAttach(context)
 
         (activity?.application as? MainApplication)?.component?.inject(this)
-        presenter.injectView(this)
+        presenter.attachView(this)
     }
 
     override fun onCreateView(
@@ -56,30 +56,32 @@ class MainFragment : IUserView, Fragment() {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    override fun showUserInfo(userInfo: User) {
-        binding.tvUsername.text = userInfo.username
+    override fun showUserInfo(userInfo: User?) {
+        dismissLoading()
+        binding.tvUsername.text = userInfo?.username
         binding.tvRepo.apply {
             isClickable = true
-            text = userInfo.repoUrl
+            text = userInfo?.repoUrl
         }
 
-        showAvatarImage(userInfo.imageUrl)
+        userInfo?.imageUrl?.let { showAvatarImage(it) }
     }
 
     private fun showAvatarImage(avatarUrl: String) {
       //  Glide.with(context).load(avatarUrl).diskCacheStrategy(DiskCacheStrategy.RESULT).into(binding.ivProfile)
     }
 
-    override fun showUserInfoError(message: String?) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+
 
     override fun dismissLoading() {
         binding.progressBar.visibility = View.GONE
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        if (::presenter.isInitialized) {
+            presenter.detachView()
+            presenter.clearResources()
+        }
         super.onDestroy()
     }
 

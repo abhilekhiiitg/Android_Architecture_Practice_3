@@ -1,4 +1,4 @@
-package com.example.practice3.view.di
+package com.example.practice3.userdetails.di
 
 import javax.inject.Scope
 

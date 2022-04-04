@@ -1,10 +1,10 @@
-package com.example.practice3.view.di.module
+package com.example.practice3.userdetails.di.module
 
 
 import android.app.Application
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
-import com.example.practice3.view.di.ApplicationContext
+import com.example.practice3.userdetails.di.ApplicationContext
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,8 +16,4 @@ class ApplicationModule(private val application: Application) {
     @Singleton
     @ApplicationContext
     fun provideContext(): Application = this.application
-
-    @Provides
-    @Singleton
-    fun provideInputMethod() = application.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 }

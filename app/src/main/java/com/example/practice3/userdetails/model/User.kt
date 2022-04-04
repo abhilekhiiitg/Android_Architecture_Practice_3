@@ -1,4 +1,4 @@
-package com.example.practice3.view.model
+package com.example.practice3.userdetails.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,9 +1,9 @@
-package com.example.practice3.view
+package com.example.practice3.userdetails
 
 import android.app.Application
-import com.example.practice3.view.di.component.AppComponent
-import com.example.practice3.view.di.component.DaggerAppComponent
-import com.example.practice3.view.di.module.ApplicationModule
+import com.example.practice3.userdetails.di.component.AppComponent
+import com.example.practice3.userdetails.di.component.DaggerAppComponent
+import com.example.practice3.userdetails.di.module.ApplicationModule
 
 open class MainApplication : Application() {
 
