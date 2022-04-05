@@ -1,19 +1,20 @@
 package com.example.practice3.userdetails.presenter
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import com.example.practice3.base.contract.BaseState
 import com.example.practice3.userdetails.contract.IUserPresenter
 import com.example.practice3.userdetails.contract.IUserView
 import com.example.practice3.userdetails.contract.UserState
 import com.example.practice3.userdetails.contract.UserState.UserInfoFetchState
-import com.example.practice3.userdetails.model.User
+import com.example.practice3.userdetails.repository.IUserRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class UserPresenter @Inject constructor() : IUserPresenter {
+class UserPresenter @Inject constructor(
+    private val userRepository: IUserRepository
+) : IUserPresenter {
     override var view: IUserView? = null
     override val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -35,15 +36,22 @@ class UserPresenter @Inject constructor() : IUserPresenter {
         }
     }
 
-    override fun getUserInfo(username: String) {
-        view?.loading()
-        Log.d("Abhilekh", "inside getUserInfo presenter : $username")
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                val user = User(username = username, imageUrl = "https://picsum.photos/200/300?random=1", repoUrl = "", id = 1)
-                userInfoFetchState = userInfoFetchState.copy(isDataLoaded = true, data = user, isLoading = false)
-            },
-            2000
+
+    override fun getUserInfo(id: Int) {
+        if (userInfoFetchState.isLoading) {
+            return
+        }
+        userInfoFetchState = userInfoFetchState.copy(isLoading = true, isDataLoaded = false)
+        disposable.add(
+            userRepository.getUserInfo(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+                    Log.d("Abhilekh","success api - $it")
+                    userInfoFetchState = userInfoFetchState.copy(isLoading = false, isDataLoaded = true, data = it.body())
+                },
+                {
+                    Log.d("Abhilekh","error in  api - $it")
+                    userInfoFetchState = userInfoFetchState.copy(isLoading = false, isDataLoaded = true, error = it)
+                })
         )
     }
 

@@ -7,7 +7,6 @@ import com.example.practice3.userdetails.model.User
 
 interface IUserView : BaseView {
     fun showUserInfo(userInfo: User?)
-    fun hideKeyboard()
 }
 
 sealed class UserState : BaseState {
@@ -20,7 +19,7 @@ sealed class UserState : BaseState {
 }
 
 interface IUserPresenter : BasePresenter<IUserView, UserState> {
-    fun getUserInfo(username: String)
+    fun getUserInfo(id: Int)
     fun clearResources()
 }
 

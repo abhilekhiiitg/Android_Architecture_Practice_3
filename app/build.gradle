@@ -42,6 +42,8 @@ ext {
   glideVersion = "3.7.0"
   rxAndroidVersion = "2.1.1"
   retrofitVersion = "2.2.0"
+  okHttpVersion = "3.7.0"
+  rxAndroidVersion = "2.1.1"
 }
 
 dependencies {
@@ -60,4 +62,11 @@ dependencies {
   implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
   kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
   kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+  implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+  implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+  implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+  implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
 }
