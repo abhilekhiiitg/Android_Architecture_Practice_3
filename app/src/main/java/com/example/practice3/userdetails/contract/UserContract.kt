@@ -16,10 +16,12 @@ sealed class UserState : BaseState {
         var error: Throwable? = null,
         var isDataLoaded: Boolean = false
     ) : UserState()
+
 }
 
 interface IUserPresenter : BasePresenter<IUserView, UserState> {
     fun getUserInfo(id: Int)
     fun clearResources()
+
 }
 
